@@ -1,0 +1,72 @@
+%! Author = p01ar
+%! Date = 14.12.23
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+% Document
+\begin{document}
+    Suppose we are given connected weighted graph $G=(V,E), (a,b,w)\in E, a,b\in V, w\in\mathbb{R}^+$.
+    Graph is unoriented:
+    $(a,b,w)\in E \Leftrightarrow (b,a,w)\in E$.
+
+    Let $\rho_r(a,b)=w$ where $(a,b,w)\in E$  or $(a,b,w)\not\in E \Rightarrow \rho_r(a,b)=\infty$.
+
+
+    Let $\rho(p_1,p_2,\dots,p_n)=\rho_r(p_1,p_2) + \rho_r(p_2, p_3) + \dots + \rho_r(p_{n-1}, p_n)=
+    \sum_{i=1}^{n-1} \rho_r(p_{i}, p_{i+1})$
+
+
+    The traveling salesman problem(TSP) is to find sequence $p_1,p_2,\dots,p_{n},p_1$ where $p_1$ is fixed starting point,
+    $p_2,\dots,p_n\in V$ such that $\rho(p_1,p_2,\dots,p_{n},p_1)\to \min$ and $i\ne j, i \ge 2 \Rightarrow p_{i}\ne p_{j}$
+
+
+    Suppose we know TSP solution for sequence of length $k>2$, i.e.:
+    \[
+        \rho(p_1, p_2, \dots p_{k-1}, p_1) = \min
+    \]
+
+    Let us denote remaining vertices as $R=V\setminus \{p_1,\dots p_k\}$. Suppose we choose an arbitrary point
+    $p_x\in R$ and we would like to add in a way that new sequence would be also a solution for TSP with inclusion
+    of new vertex $p_x$.
+
+
+    Let us assume that $p_x$ would be inserted before $p_m, m\ge 2$ in a sequence. By definition of $\rho$ we have(denote it by $C$):
+    \[
+        \rho(p_1, p_2, \dots, p_{k-1}, p_1) = \sum_{i=1}^{k-2} \rho_r(p_{i}, p_{i+1}) + \rho(p_{k-1}, p_1) = C
+    \]
+    Now consider $\rho$ for a path with inserted $p_x$:
+    \[
+        \rho(p_1, p_2, \dots,p_{m-1}, p_{x}, p_m,\dots, p_{k-1},\min_m - \rho_r(p_{m-1}, p_m) + \rho_r(p_{m-1}, p_x) + \rho_r(p_x, p_m) p_1) = C - \rho_r(p_{m-1}, p_m) + \rho_r(p_{m-1}, p_x) + \rho_r(p_x, p_m)
+    \]
+
+    In order to achieve minimization of distance $\rho$ for new sequence we should find:
+    \[
+       \min_m - \rho_r(p_{m-1}, p_m) + \rho_r(p_{m-1}, p_x) + \rho_r(p_x, p_m)
+    \]
+
+    Though choosing arbitrary $p_{x}$ from $R$ may lead to the point which is not connected
+    with any point in graph breaking initial condition that graph considered is connected.
+    So we impose aditional restriction that $p_x$ should be choosen in a way to also minimize distance:
+    \[
+        \min_{m, p_x\in R}, - \rho_r(p_{m-1}, p_m) + \rho_r(p_{m-1}, p_x) + \rho_r(p_x, p_m)
+    \]
+
+    As we already know that $p_1, p_2, \dots, p_{k-1}, p_1$ is shortest possible cyclic path over all nodes in subgraph
+    $V_k=\{p_1,\dots, p_{k-1}\}, S_k=(V_k, \{(a,b,w)|(a,b,w)\in E\land a,b\in V_k\})$
+
+    Then path $p_1, p_2, \dots,p_{m-1}, p_{x}, p_m,\dots, p_{k-1}$ is shortest possible cyclic path over all nodes in subgraph
+    $V_{k+1}=\{p_1,\dots, p_k\}, S_{k+1}=(V_{k+1}, \{(a,b,w)|(a,b,w)\in E\land a,b\in V_{k+1}\})$, i.e. solution of TSP for this subgraph
+
+    Minimization operation take $O(N^2)$. Additionally we need to add all nodes to graph which takes $O(N^3)$. After adding
+    all nodes to graph we get TSP solution for graph $G$.
+
+
+    \bibliography{main}
+    \bibliographystyle{plain}
+
+\end{document}
